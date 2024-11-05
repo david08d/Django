@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'helloapp',
     'multipage_app',
+    'Sport_Club',
+    'blog_app',
 ]
 
 MIDDLEWARE = [

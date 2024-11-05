@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def HomeSportClub(request):
+    return render(request, "Sport_Club/homesportclub.html")

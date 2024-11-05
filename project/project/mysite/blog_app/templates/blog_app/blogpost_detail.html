@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blogpost.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+;
+        }
+
+        p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .post-info {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        .post-info i {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{{ blogpost.title }}</h1>
+
+    <p>{{ blogpost.text }}</p>
+
+    <div class="post-info">
+        <p><i>Posted on {{ blogpost.created_at }}</i></p>
+        <p><i>Updated on {{ blogpost.updated_at }}</i></p>
+    </div>
+
+</body>
+</html>

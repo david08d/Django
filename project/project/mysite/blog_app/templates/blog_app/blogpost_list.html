@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif; /* Set a clean font */
+            background-color: #f4f4f4; /* Light background color */
+            margin: 0; /* Remove default margin */
+            padding: 20px; /* Padding around the body */
+            color: #333; /* Default text color */
+        }
+
+        h2 {
+            color: #2c3e50; /* Darker blue-gray for the heading */
+            text-align: center; /* Center the heading */
+            margin-bottom: 20px; /* Space below the heading */
+        }
+
+        .blogpost-list {
+            display: grid; /* Use grid layout for posts */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+            gap: 20px; /* Space between items */
+            list-style-type: none; /* Remove default list styling */
+            padding: 0; /* Remove default padding */
+        }
+
+        .blogpost-item {
+            background-color: #ffffff; /* White background for items */
+            border-radius: 8px; /* Rounded corners */
+            padding: 20px; /* Padding inside each item */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: transform 0.2s, box-shadow 0.2s; /* Smooth effect */
+            border-left: 5px solid #3498db; /* Blue accent border on the left */
+        }
+
+        .blogpost-item:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+        }
+
+        .blogpost-item a {
+            text-decoration: none; /* Remove underline from links */
+            color: #2980b9; /* Medium blue color for links */
+            font-weight: bold; /* Bold text */
+            font-size: 1.2em; /* Larger font size for titles */
+        }
+
+        .blogpost-item a:hover {
+            text-decoration: underline; /* Underline on hover */
+            color: #1abc9c; /* Change color on hover */
+        }
+
+        .edit-delete {
+            margin-top: 15px; /* Space above edit/delete links */
+        }
+
+        .edit-delete a {
+            margin-right: 10px; /* Space between edit and delete links */
+            background-color: #3498db; /* Blue button */
+            color: #ffffff; /* White text */
+            padding: 8px 12px; /* Padding for buttons */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* Remove underline */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        .edit-delete a:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .blogpost-list {
+                grid-template-columns: 1fr; /* Stack items on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h2>All Posts</h2>
+<ul class="blogpost-list">
+    {% for blogpost in blogpost_list %}
+    <li class="blogpost-item">
+        <a href="{% url 'blog_app:post' blogpost.id %}">{{ blogpost.title }}</a>
+        <p>{{ blogpost.created_at|date:"F j, Y" }}</p> <!-- Display creation date -->
+        {% if blogpost.owner == user %}
+        <div class="edit-delete">
+            <a href="{% url 'blog_app:update_post' blogpost.id %}">Edit</a>
+            <a href="{% url 'blog_app:delete_post' blogpost.id %}">Delete</a>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
