@@ -6,87 +6,161 @@
     <title>Blog Posts</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif; /* Set a clean font */
-            background-color: #f4f4f4; /* Light background color */
-            margin: 0; /* Remove default margin */
-            padding: 20px; /* Padding around the body */
-            color: #333; /* Default text color */
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
         }
 
         h2 {
-            color: #2c3e50; /* Darker blue-gray for the heading */
-            text-align: center; /* Center the heading */
-            margin-bottom: 20px; /* Space below the heading */
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .create-button {
+            display: inline-block;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .create-button:hover {
+            background-color: #2980b9;
         }
 
         .blogpost-list {
-            display: grid; /* Use grid layout for posts */
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
-            gap: 20px; /* Space between items */
-            list-style-type: none; /* Remove default list styling */
-            padding: 0; /* Remove default padding */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            list-style-type: none;
+            padding: 0;
         }
 
         .blogpost-item {
-            background-color: #ffffff; /* White background for items */
-            border-radius: 8px; /* Rounded corners */
-            padding: 20px; /* Padding inside each item */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-            transition: transform 0.2s, box-shadow 0.2s; /* Smooth effect */
-            border-left: 5px solid #3498db; /* Blue accent border on the left */
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid #3498db;
         }
 
         .blogpost-item:hover {
-            transform: translateY(-5px); /* Lift effect on hover */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .blogpost-item a {
-            text-decoration: none; /* Remove underline from links */
-            color: #2980b9; /* Medium blue color for links */
-            font-weight: bold; /* Bold text */
-            font-size: 1.2em; /* Larger font size for titles */
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+            font-size: 1.2em;
         }
 
         .blogpost-item a:hover {
-            text-decoration: underline; /* Underline on hover */
-            color: #1abc9c; /* Change color on hover */
+            text-decoration: underline;
+            color: #1abc9c;
         }
 
         .edit-delete {
-            margin-top: 15px; /* Space above edit/delete links */
+            margin-top: 15px;
         }
 
         .edit-delete a {
-            margin-right: 10px; /* Space between edit and delete links */
-            background-color: #3498db; /* Blue button */
-            color: #ffffff; /* White text */
-            padding: 8px 12px; /* Padding for buttons */
-            border-radius: 5px; /* Rounded corners */
-            text-decoration: none; /* Remove underline */
-            transition: background-color 0.3s; /* Smooth transition */
+            margin-right: 10px;
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
 
         .edit-delete a:hover {
-            background-color: #2980b9; /* Darker blue on hover */
+            background-color: #2980b9;
         }
 
-        /* Responsive adjustments */
+        /* Pagination styles */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .pagination .step-links {
+            display: inline-block;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination .step-links a {
+            color: #3498db;
+            padding: 5px 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .pagination .step-links a:hover {
+            color: #1abc9c;
+        }
+
+        .pagination .current {
+            color: #555;
+            font-weight: bold;
+        }
+
         @media (max-width: 600px) {
             .blogpost-list {
-                grid-template-columns: 1fr; /* Stack items on small screens */
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
 <h2>All Posts</h2>
+
+<!-- Create button for registered users -->
+{% if user.is_authenticated %}
+<a href="{% url 'blog_app:create_post' %}" class="create-button">Create</a>
+{% endif %}
+
 <ul class="blogpost-list">
     {% for blogpost in blogpost_list %}
     <li class="blogpost-item">
         <a href="{% url 'blog_app:post' blogpost.id %}">{{ blogpost.title }}</a>
-        <p>{{ blogpost.created_at|date:"F j, Y" }}</p> <!-- Display creation date -->
+        <p>{{ blogpost.created_at|date:"F j, Y" }}</p>
         {% if blogpost.owner == user %}
         <div class="edit-delete">
             <a href="{% url 'blog_app:update_post' blogpost.id %}">Edit</a>
