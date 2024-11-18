@@ -36,15 +36,19 @@
     </style>
 </head>
 <body>
+    <div class="post-info">
+        <p><i>Author: {{blogpost.owner}}</i></p><br/>
+        <p><i>Status: {{blogpost.get_status_display}}</i></p><br/>
+        <p><i>Posted on {{ blogpost.created_at }}</i></p><br/>
+        <p><i>Updated at: {{blogpost.published_at}}</i></p><br/>
+
+    </div>
 
     <h1>{{ blogpost.title }}</h1>
 
     <p>{{ blogpost.text }}</p>
 
-    <div class="post-info">
-        <p><i>Posted on {{ blogpost.created_at }}</i></p>
-        <p><i>Updated on {{ blogpost.updated_at }}</i></p>
-    </div>
+
 
 </body>
 </html>

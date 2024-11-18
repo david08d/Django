@@ -19,7 +19,7 @@
             margin-bottom: 20px;
         }
 
-        .create-button {
+        .create-button, .my-posts-button, .drafts-button {
             display: inline-block;
             position: absolute;
             right: 20px;
@@ -33,8 +33,20 @@
             transition: background-color 0.3s;
         }
 
-        .create-button:hover {
+        .create-button:hover, .my-posts-button:hover, .drafts-button:hover {
             background-color: #2980b9;
+        }
+
+        .my-posts-button {
+            top: 60px; /* Adjust position for the second button */
+            right: 20px;
+            background-color: #1abc9c;
+        }
+
+        .drafts-button {
+            top: 100px; /* Adjust position for the drafts button */
+            right: 20px;
+            background-color: #f39c12;
         }
 
         .blogpost-list {
@@ -154,13 +166,15 @@
 <!-- Create button for registered users -->
 {% if user.is_authenticated %}
 <a href="{% url 'blog_app:create_post' %}" class="create-button">Create</a>
+<a href="{% url 'blog_app:my_posts' %}" class="my-posts-button">My Posts</a>
+<a href="{% url 'blog_app:draft_posts' %}" class="drafts-button">Drafts</a>
 {% endif %}
 
 <ul class="blogpost-list">
     {% for blogpost in blogpost_list %}
     <li class="blogpost-item">
-        <a href="{% url 'blog_app:post' blogpost.id %}">{{ blogpost.title }}</a>
-        <p>{{ blogpost.created_at|date:"F j, Y" }}</p>
+        <h2><a href="{{ blogpost.get_absolute_url }}">{{ blogpost.title }}</a></h2> <!-- Use the link for the post title -->
+        <p class="text-muted">{{ blogpost.created_at|date:"F j, Y" }}</p>
         {% if blogpost.owner == user %}
         <div class="edit-delete">
             <a href="{% url 'blog_app:update_post' blogpost.id %}">Edit</a>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f1f2f6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin: 20px 0;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        /* Create New Post Button */
+        .create-button {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.5em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .create-button:hover {
+            background-color: #2ecc71;
+            transform: translateY(-5px);
+        }
+
+        .create-button:active {
+            transform: translateY(2px);
+        }
+
+        /* Post List */
+        .blogpost-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            list-style: none;
+            margin: 0;
+        }
+
+        .blogpost-item {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blogpost-item:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px);
+        }
+
+        .blogpost-item h2 {
+            font-size: 1.8em;
+            margin: 0;
+            color: #3498db;
+        }
+
+        .blogpost-item p.text-muted {
+            font-size: 1em;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .blogpost-item a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .blogpost-item a:hover {
+            color: #1abc9c;
+            text-decoration: underline;
+        }
+
+        /* Edit/Delete Buttons */
+        .edit-delete {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-delete a {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-delete a:hover {
+            background-color: #2980b9;
+        }
+
+        /* Pagination */
+        .pagination {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .pagination .step-links {
+            display: inline-block;
+            padding: 12px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination .step-links a {
+            color: #3498db;
+            padding: 8px 14px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .pagination .step-links a:hover {
+            color: #1abc9c;
+        }
+
+        .pagination .current {
+            color: #555;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .create-button {
+                right: 15px;
+                bottom: 15px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h2>My Posts</h2>
+
+<a href="{% url 'blog_app:create_post' %}" class="create-button">+</a>
+
+<ul class="blogpost-list">
+    {% for blogpost in blogpost_list %}
+    <li class="blogpost-item">
+        <h2><a href="{{ blogpost.get_absolute_url }}">{{ blogpost.title }}</a></h2>
+        <p class="text-muted">{{ blogpost.created_at|date:"F j, Y" }}</p>
+        <div class="edit-delete">
+            <a href="{% url 'blog_app:update_post' blogpost.id %}">Edit</a>
+            <a href="{% url 'blog_app:delete_post' blogpost.id %}">Delete</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+</body>
+</html>

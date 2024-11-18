@@ -1,0 +1,95 @@
+<!-- draft_posts.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draft Posts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            padding-top: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.6em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        p {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        small {
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .no-drafts {
+            text-align: center;
+            font-size: 1.2em;
+            color: #777;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Draft Posts</h1>
+
+    <ul>
+        {% for post in draft_posts %}
+        <li>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.text }}</p>
+            <p><small>Created at: {{ post.created_at }}</small></p>
+            <a href="{% url 'blog_app:update_post' post.id %}">Edit</a> |
+            <a href="{% url 'blog_app:delete_post' post.id %}">Delete</a>
+        </li>
+        {% empty %}
+        <p class="no-drafts">No drafts found.</p>
+        {% endfor %}
+    </ul>
+
+    <a class="back-link" href="{% url 'blog_app:posts' %}">Back to All Posts</a>
+</body>
+</html>
