@@ -1,3 +1,215 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Blog Posts</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: 'Arial', sans-serif;-->
+<!--            background-color: #f4f4f4;-->
+<!--            margin: 0;-->
+<!--            padding: 20px;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        h2 {-->
+<!--            color: #2c3e50;-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .create-button, .my-posts-button, .drafts-button {-->
+<!--            display: inline-block;-->
+<!--            position: absolute;-->
+<!--            right: 20px;-->
+<!--            top: 20px;-->
+<!--            background-color: #3498db;-->
+<!--            color: #ffffff;-->
+<!--            padding: 10px 15px;-->
+<!--            border-radius: 5px;-->
+<!--            text-decoration: none;-->
+<!--            font-weight: bold;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+
+<!--        .create-button:hover, .my-posts-button:hover, .drafts-button:hover {-->
+<!--            background-color: #2980b9;-->
+<!--        }-->
+
+<!--        .my-posts-button {-->
+<!--            top: 60px; /* Adjust position for the second button */-->
+<!--            right: 20px;-->
+<!--            background-color: #1abc9c;-->
+<!--        }-->
+
+<!--        .drafts-button {-->
+<!--            top: 100px; /* Adjust position for the drafts button */-->
+<!--            right: 20px;-->
+<!--            background-color: #f39c12;-->
+<!--        }-->
+
+<!--        .blogpost-list {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));-->
+<!--            gap: 20px;-->
+<!--            list-style-type: none;-->
+<!--            padding: 0;-->
+<!--        }-->
+
+<!--        .blogpost-item {-->
+<!--            background-color: #ffffff;-->
+<!--            border-radius: 8px;-->
+<!--            padding: 20px;-->
+<!--            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);-->
+<!--            transition: transform 0.2s, box-shadow 0.2s;-->
+<!--            border-left: 5px solid #3498db;-->
+<!--        }-->
+
+<!--        .blogpost-item:hover {-->
+<!--            transform: translateY(-5px);-->
+<!--            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);-->
+<!--        }-->
+
+<!--        .blogpost-item a {-->
+<!--            text-decoration: none;-->
+<!--            color: #2980b9;-->
+<!--            font-weight: bold;-->
+<!--            font-size: 1.2em;-->
+<!--        }-->
+
+<!--        .blogpost-item a:hover {-->
+<!--            text-decoration: underline;-->
+<!--            color: #1abc9c;-->
+<!--        }-->
+
+<!--        .edit-delete {-->
+<!--            margin-top: 15px;-->
+<!--        }-->
+
+<!--        .edit-delete a {-->
+<!--            margin-right: 10px;-->
+<!--            background-color: #3498db;-->
+<!--            color: #ffffff;-->
+<!--            padding: 8px 12px;-->
+<!--            border-radius: 5px;-->
+<!--            text-decoration: none;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+
+<!--        .edit-delete a:hover {-->
+<!--            background-color: #2980b9;-->
+<!--        }-->
+
+<!--        /* Pagination styles */-->
+<!--        .pagination {-->
+<!--            text-align: center;-->
+<!--            margin-top: 20px;-->
+<!--            font-size: 1em;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        .pagination .step-links {-->
+<!--            display: inline-block;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 5px;-->
+<!--            background-color: #ffffff;-->
+<!--            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        .pagination .step-links a {-->
+<!--            color: #3498db;-->
+<!--            padding: 5px 10px;-->
+<!--            text-decoration: none;-->
+<!--            font-weight: bold;-->
+<!--            transition: color 0.3s;-->
+<!--        }-->
+
+<!--        .pagination .step-links a:hover {-->
+<!--            color: #1abc9c;-->
+<!--        }-->
+
+<!--        .pagination .current {-->
+<!--            color: #555;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        @media (max-width: 600px) {-->
+<!--            .blogpost-list {-->
+<!--                grid-template-columns: 1fr;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--        {% if page_obj.has_previous %}-->
+<!--            <a href="?page=1">&laquo; first</a>-->
+<!--            <a href="?page={{ page_obj.previous_page_number }}">previous</a>-->
+<!--        {% endif %}-->
+
+<!--        <span class="current">-->
+<!--            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if page_obj.has_next %}-->
+<!--            <a href="?page={{ page_obj.next_page_number }}">next</a>-->
+<!--            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>-->
+<!--        {% endif %}-->
+<!--    </span>-->
+<!--</div>-->
+
+<!--<h2>All Posts</h2>-->
+
+<!--&lt;!&ndash; Create button for registered users &ndash;&gt;-->
+<!--{% if user.is_authenticated %}-->
+<!--<a href="{% url 'blog_app:create_post' %}" class="create-button">Create</a>-->
+<!--<a href="{% url 'blog_app:my_posts' %}" class="my-posts-button">My Posts</a>-->
+<!--<a href="{% url 'blog_app:draft_posts' %}" class="drafts-button">Drafts</a>-->
+<!--{% endif %}-->
+
+<!--<ul class="blogpost-list">-->
+<!--    {% for blogpost in blogpost_list %}-->
+<!--    <li class="blogpost-item">-->
+<!--        <h2><a href="{{ blogpost.get_absolute_url }}">{{ blogpost.title }}</a></h2> &lt;!&ndash; Use the link for the post title &ndash;&gt;-->
+<!--        <p class="text-muted">{{ blogpost.created_at|date:"F j, Y" }}</p>-->
+<!--        {% if blogpost.owner == user %}-->
+<!--        <div class="edit-delete">-->
+<!--            <a href="{% url 'blog_app:update_post' blogpost.id %}">Edit</a>-->
+<!--            <a href="{% url 'blog_app:delete_post' blogpost.id %}">Delete</a>-->
+<!--        </div>-->
+<!--        {% endif %}-->
+<!--    </li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+<!--<div class="comments-section">-->
+<!--    <h3>Comments</h3>-->
+<!--    {% for comment in blogpost.comments.all %}-->
+<!--        {% if comment.is_active %}-->
+<!--            <div class="comment">-->
+<!--                <p><strong>{{ comment.name }}</strong> ({{ comment.created_at|date:"d M Y H:i" }})</p>-->
+<!--                <p>{{ comment.body }}</p>-->
+<!--            </div>-->
+<!--        {% else %}-->
+<!--            <p>This comment is under moderation.</p>-->
+<!--        {% endif %}-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+<!--    <h4>Add a Comment:</h4>-->
+<!--    {{ form.as_p }}-->
+<!--    <button type="submit">Submit</button>-->
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -139,6 +351,72 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* New styles for the comment section */
+        .comments-section {
+            margin-top: 30px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .comment p {
+            margin: 5px 0;
+        }
+
+        .comment strong {
+            color: #2980b9;
+        }
+
+        /* Style for the comment form */
+        .comment-form {
+            margin-top: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .comment-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comment-form form input,
+        .comment-form form textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .comment-form form button {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .comment-form form button:hover {
+            background-color: #2980b9;
+        }
+
     </style>
 </head>
 <body>
@@ -173,7 +451,7 @@
 <ul class="blogpost-list">
     {% for blogpost in blogpost_list %}
     <li class="blogpost-item">
-        <h2><a href="{{ blogpost.get_absolute_url }}">{{ blogpost.title }}</a></h2> <!-- Use the link for the post title -->
+        <h2><a href="{{ blogpost.get_absolute_url }}">{{ blogpost.title }}</a></h2>
         <p class="text-muted">{{ blogpost.created_at|date:"F j, Y" }}</p>
         {% if blogpost.owner == user %}
         <div class="edit-delete">
@@ -184,6 +462,7 @@
     </li>
     {% endfor %}
 </ul>
+
 
 </body>
 </html>

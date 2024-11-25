@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'multipage_app',
     'Sport_Club',
     'blog_app',
+    'taggit',
 ]
 
 MIDDLEWARE = [

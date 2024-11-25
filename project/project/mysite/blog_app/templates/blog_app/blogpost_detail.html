@@ -11,42 +11,271 @@
             margin: 0;
             padding: 20px;
             color: #333;
-        }
-
-        h1 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-;
-        }
-
-        p {
-            margin: 10px 0;
             line-height: 1.6;
         }
 
-        .post-info {
-            font-size: 0.9em;
-            color: #777;
-            margin-top: 20px;
+        h1, h3, h4 {
+            color: #4CAF50;
         }
 
-        .post-info i {
-            font-style: italic;
+        h1 {
+            margin-bottom: 20px;
         }
+
+        .post-info {
+            background: #fff;
+            padding: 10px;
+            border-left: 5px solid #4CAF50;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-info p {
+            font-size: 0.9em;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+        }
+
+        .comments-section h3 {
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+
+        .comment {
+            background: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment p {
+            margin: 5px 0;
+        }
+
+        .comment strong {
+            color: #333;
+        }
+
+        .comment-form {
+            margin-top: 30px;
+            padding: 15px;
+            background: #fff;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form h4 {
+            margin-bottom: 15px;
+        }
+
+        .comment-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comment-form form button {
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .comment-form form button:hover {
+            background: #45a049;
+        }
+
+        .comment-form form input,
+        .comment-form form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .similar-posts {
+            margin-top: 40px;
+            background: #fff;
+            padding: 20px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .similar-posts h3 {
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+
+        .similar-posts ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .similar-posts ul li {
+            margin: 10px 0;
+        }
+
+        .similar-posts ul li a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .similar-posts ul li a:hover {
+            color: #45a049;
+            text-decoration: underline;
+        }
+
+        .tags-section {
+            margin-top: 40px;
+            background: #fff;
+            padding: 20px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tags-section h3 {
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+
+        .tags-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tags-section ul li {
+            margin: 10px 0;
+        }
+
+        .tags-section ul li a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .tags-section ul li a:hover {
+            color: #45a049;
+            text-decoration: underline;
+        }
+        /* Add this to your CSS file */
+        .progress-bar {
+            border: 1px solid #000;
+            background: #f4f4f4;
+            width: 100%;
+            height: 20px;
+            position: relative;
+        }
+
+        .progress-bar div {
+            background: #4caf50;
+            height: 100%;
+            width: 0; /* Dynamically updated by widthratio */
+            transition: width 0.5s ease-in-out;
+        }
+
     </style>
 </head>
 <body>
     <div class="post-info">
-        <p><i>Author: {{blogpost.owner}}</i></p><br/>
-        <p><i>Status: {{blogpost.get_status_display}}</i></p><br/>
-        <p><i>Posted on {{ blogpost.created_at }}</i></p><br/>
-        <p><i>Updated at: {{blogpost.published_at}}</i></p><br/>
-
+        <p><i>Author: {{ blogpost.owner }}</i></p>
+        <p><i>Status: {{ blogpost.get_status_display }}</i></p>
+        <p><i>Posted on: {{ blogpost.created_at|date:"d M Y H:i" }}</i></p>
+        <p><i>Last updated: {{ blogpost.published_at|date:"d M Y H:i" }}</i></p>
     </div>
 
     <h1>{{ blogpost.title }}</h1>
-
     <p>{{ blogpost.text }}</p>
+
+    <div class="comments-section">
+        <h3>Comments</h3>
+
+        <!-- Display existing comments -->
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.name }}</strong> ({{ comment.created_at|date:"d M Y H:i" }})</p>
+                <p>{{ comment.body }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+
+
+    <!-- Comment form -->
+    <div class="comment-form">
+        <h4>Add a Comment:</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- This renders the form fields, including the textarea -->
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Similar posts section -->
+    <div class="similar-posts">
+        <h3>Similar Posts:</h3>
+        <ul>
+            {% for post in similar_posts %}
+                <li>
+                    <a href="{% url 'blog_app:post' post.created_at.year post.created_at.month post.created_at.day post.slug %}">
+                        {{ post.title }}
+                    </a>
+                </li>
+            {% empty %}
+                <li>No similar posts found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    <div class="tags-section">
+        <h3>Tags:</h3>
+        <ul>
+            {% for tag in blogpost.tags.all %}
+                <li>{{ tag.name }}</li>
+            {% empty %}
+                <li>No tags</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+
+     {% verbatim mycode%}
+        <h1>{{ blogpost.title }}</h1>
+     {% endverbatim mycode%}
+
+    <p>Likes: {{ likes }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" name="like">Like</button>
+    </form>
+    <h2>Likes Progress</h2>
+    <div class="progress-bar" style="border: 1px solid #000; background: #f4f4f4; height: 20px; width: 100%; position: relative;">
+        <div style="background: #4caf50; height: 100%; width: {% widthratio likes total_likes 100 %}%;"></div>
+    </div>
+    <p>Total Likes: {{ total_likes }}</p>
+
+    {% with total=blogpost.likes|add:blogpost.comments.count %}
+        <p>Total interactions: {{ total }}</p>
+    {% endwith %}
+
+
+
+
+
 
 
 
