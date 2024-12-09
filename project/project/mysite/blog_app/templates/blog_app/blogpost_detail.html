@@ -273,6 +273,14 @@
     {% endwith %}
 
 
+    <h3>Share</h3>
+    <form method="post" action="{% url 'blog_app:share_post' blogpost.id %}">
+        {% csrf_token %}
+        {{ email_form.as_p }}
+        <input type="submit" value="Send">
+    </form>
+
+
 
 
 

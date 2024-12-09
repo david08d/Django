@@ -8,6 +8,7 @@ from django.utils.timezone import now
 from taggit.managers import TaggableManager
 
 
+
 class BlogPost(models.Model):
     class PublishedPostsManager(models.Manager):
         # Custom manager to filter only published posts

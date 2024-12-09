@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.db.models import Sum
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -9,11 +10,13 @@ from taggit.models import Tag
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView
 from .models import BlogPost
-from .forms import CommentForm
+from .forms import CommentForm, EmailForm
 from .forms import CommentForm
 from .models import BlogPost
 from django.views.generic import DetailView, UpdateView, DeleteView, CreateView
 from django.utils.text import slugify
+
+
 
 
 class BlogListView(ListView):
@@ -212,3 +215,25 @@ class TaggedPostsView(ListView):
         tag_slug = self.kwargs.get('slug')
         tag = Tag.objects.get(slug=tag_slug)
         return BlogPost.objects.filter(tags=tag)
+
+
+@require_POST
+def share_post(request, post_id):
+    post_obj = get_object_or_404(BlogPost, id=post_id)
+    post_abs_url = post_obj.get_absolute_url()
+
+    form = EmailForm(request.POST)
+    if form.is_valid():
+        data = form.cleaned_data
+        text = data["text"] + f"Post url: {post_abs_url}"
+        send_mail(
+            data["subject"],
+            text,
+            "diwtech08@gmail.com",
+            [data["to"]],
+            fail_silently=False,
+        )
+        # print(f"@@@ Sending email to {data}")
+
+    return redirect(post_obj)
+

@@ -11,6 +11,7 @@ urlpatterns = [
     path('my-posts/', MyPostsView.as_view(), name='my_posts'),
     path('drafts/', DraftPostsView.as_view(), name='draft_posts'),
     path('tagged/<slug:slug>/', TaggedPostsView.as_view(), name='tagged'),
+    path('share_post/<int:post_id>', share_post, name="share_post")
 
 ]
 
